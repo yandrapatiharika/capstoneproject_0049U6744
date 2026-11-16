@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar {
+  background: var(--bw-bg);
+  border-bottom: 1px solid var(--bw-border);
+  height: var(--bw-nav-h);
+}
+
+.navbar__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  position: relative;
+}
+
+.navbar__menu-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  margin-right: 8px;
+  &:hover {
+    background: var(--bw-layer-hover);
+  }
+}
+
+.navbar__brand {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.navbar__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--bw-border-strong);
+  margin: 0 16px;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+
+  a {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: var(--bw-text-2);
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    &:hover {
+      background: var(--bw-layer-hover);
+      color: var(--bw-text);
+    }
+    &.is-active {
+      color: var(--bw-text);
+      border-bottom-color: var(--bw-primary);
+    }
+  }
+}
+
+.navbar__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.navbar__icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  &:hover {
+    background: var(--bw-layer-hover);
+  }
+}
+
+.navbar__badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  background: #da1e28;
+  color: #fff;
+  font-size: 9px;
+  line-height: 14px;
+  text-align: center;
+}
+
+/* ---------- mobile / tablet ---------- */
+@media (max-width: 767px) {
+  .navbar__divider {
+    display: none;
+  }
+  .navbar__brand {
+    margin-left: 4px;
+  }
+  .navbar__links {
+    position: absolute;
+    top: var(--bw-nav-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    height: auto;
+    background: var(--bw-layer);
+    border-bottom: 1px solid var(--bw-border);
+    display: none;
+
+    &.is-open {
+      display: flex;
+    }
+    a {
+      height: 48px;
+      border-bottom: 1px solid var(--bw-border);
+      padding: 0 24px;
+      &.is-active {
+        border-bottom-color: var(--bw-border);
+        box-shadow: inset 3px 0 0 var(--bw-primary);
+      }
+    }
+  }
+}

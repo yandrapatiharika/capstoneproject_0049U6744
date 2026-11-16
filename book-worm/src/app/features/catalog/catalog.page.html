@@ -1,0 +1,46 @@
+<div class="layout">
+  <aside class="sidebar" aria-label="Categories">
+    <ul class="sidebar__list">
+      @for (cat of categories; track cat) {
+        <li>
+          <button
+            type="button"
+            class="sidebar__item"
+            [class.is-active]="cat === category()"
+            [attr.aria-current]="cat === category() ? 'true' : null"
+            (click)="category.set(cat)"
+          >
+            {{ cat }}
+          </button>
+        </li>
+      }
+    </ul>
+  </aside>
+
+  <main class="content">
+    <section class="filters" aria-label="Search and filters">
+      <app-search-bar class="filters__search" [(value)]="query" />
+      <app-filter-select label="Language" [options]="languages" [(value)]="language" />
+      <app-filter-select label="Format (Paperback, ebook etc)" [options]="formats" [(value)]="format" />
+      <app-filter-select label="Price Range" [options]="priceRanges" [(value)]="priceRange" />
+      <app-filter-select label="Sort by" [options]="sortOptions" [(value)]="sort" />
+    </section>
+
+    @for (section of sections(); track section.key) {
+      <section class="section">
+        <h2 class="section__title">{{ section.title }}</h2>
+        <div class="grid">
+          @for (book of section.books; track book.id) {
+            <app-book-card [book]="book" size="md" />
+          }
+        </div>
+      </section>
+    } @empty {
+      <div class="empty-state">
+        <h2>No books found</h2>
+        <p>Try a different search term or adjust your filters.</p>
+        <button type="button" class="btn btn-gap-sm" (click)="clearFilters()">Clear filters</button>
+      </div>
+    }
+  </main>
+</div>

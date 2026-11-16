@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.card__cover {
+  display: block;
+  flex: 0 0 var(--cover-w);
+  width: var(--cover-w);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.card__body {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.card__title {
+  font-size: 14px;
+  line-height: 1.3;
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.card__author {
+  margin-top: 4px;
+  color: var(--bw-text-2);
+}
+
+.card__desc {
+  margin-top: 8px;
+  color: var(--bw-text-2);
+}
+
+.card__format {
+  margin-top: 10px;
+  color: var(--bw-text-2);
+}
+
+.card__genres {
+  margin-top: 2px;
+  color: var(--bw-text-2);
+}
+
+.card__price {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--bw-text);
+}
+
+.card__delivery {
+  color: var(--bw-text-2);
+  strong {
+    font-weight: 600;
+    color: var(--bw-text);
+  }
+}
+
+/* larger variant (cart / checkout) */
+.card--lg {
+  gap: 24px;
+  .card__body {
+    font-size: 12px;
+  }
+  .card__title {
+    font-size: 18px;
+  }
+  .card__price {
+    font-size: 20px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card--lg {
+    gap: 16px;
+    .card__cover {
+      flex-basis: 120px;
+      width: 120px;
+    }
+  }
+}

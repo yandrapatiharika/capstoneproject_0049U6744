@@ -1,0 +1,21 @@
+<div class="scene">
+  <img class="scene-bg" src="books-scene.svg" alt="" />
+
+  <section class="scene-card confirm" aria-labelledby="confirm-title">
+    <div class="confirm__check" aria-hidden="true"><app-icon name="check" [size]="26" /></div>
+    <h1 id="confirm-title" class="confirm__title">
+      Your purchase of the<br />following reads is successful
+    </h1>
+    @if (order(); as o) {
+      <p class="confirm__order">Order <strong>#{{ o.id }}</strong></p>
+    }
+
+    <div class="confirm__books">
+      @for (book of purchased(); track book.id) {
+        <app-book-card [book]="book" size="md" [linked]="false" />
+      }
+    </div>
+
+    <a routerLink="/" class="btn confirm__cta">Continue your Shopping <app-icon name="list" [size]="16" /></a>
+  </section>
+</div>

@@ -1,0 +1,133 @@
+<div class="container page">
+  <app-breadcrumb [items]="crumbs()" [trailingSlash]="true" />
+  <h1 class="page-title">Shopping Cart</h1>
+
+  @if (cart.lines().length === 0) {
+    <div class="panel empty-state">
+      <h2>Your cart is empty</h2>
+      <p>Browse the catalog and add some great reads.</p>
+      <a routerLink="/" class="btn btn-gap-sm">Continue Shopping <app-icon name="arrow-right" [size]="16" /></a>
+    </div>
+  } @else {
+    <section class="panel cart" aria-label="Cart items">
+      @for (line of cart.lines(); track line.book.id) {
+        <div class="cart__item">
+          <app-book-card [book]="line.book" size="lg">
+            <div class="cart__controls">
+              <app-quantity-stepper
+                [value]="line.quantity"
+                (valueChange)="cart.setQuantity(line.book.id, $event)"
+              />
+              <button type="button" class="cart__remove" (click)="cart.remove(line.book.id)">
+                <app-icon name="trash" [size]="14" /> Remove
+              </button>
+            </div>
+          </app-book-card>
+        </div>
+      }
+    </section>
+
+    <div class="checkout">
+      <section class="panel address" aria-label="Address">
+        <h2 class="address__title">Address</h2>
+        <label class="check">
+          <input type="checkbox" [checked]="useSaved()" (change)="toggleSaved($any($event.target).checked)" />
+          <span>Use Saved Address</span>
+        </label>
+
+        <form class="address__form" [formGroup]="form" (ngSubmit)="payNow()" novalidate id="address-form">
+          <label class="field span-4">
+            <span class="field-label">First Name</span>
+            <input class="field-input" formControlName="firstName" placeholder="First Name" autocomplete="given-name" [class.is-invalid]="invalid('firstName')" />
+            @if (invalid('firstName')) { <span class="field-error">First name is required</span> }
+          </label>
+          <label class="field span-4">
+            <span class="field-label">Last Name</span>
+            <input class="field-input" formControlName="lastName" placeholder="Last Name" autocomplete="family-name" [class.is-invalid]="invalid('lastName')" />
+            @if (invalid('lastName')) { <span class="field-error">Last name is required</span> }
+          </label>
+          <label class="field span-4">
+            <span class="field-label">Address</span>
+            <input class="field-input" formControlName="address" placeholder="Address Line 2" autocomplete="street-address" [class.is-invalid]="invalid('address')" />
+            @if (invalid('address')) { <span class="field-error">Address is required</span> }
+          </label>
+
+          <label class="field span-6">
+            <span class="field-label">e-mail</span>
+            <input class="field-input" type="email" formControlName="email" placeholder="e-mail" autocomplete="email" [class.is-invalid]="invalid('email')" />
+            @if (invalid('email')) { <span class="field-error">Enter a valid e-mail</span> }
+          </label>
+          <label class="field span-3">
+            <span class="field-label">City</span>
+            <input class="field-input" formControlName="city" placeholder="City" autocomplete="address-level2" [class.is-invalid]="invalid('city')" />
+            @if (invalid('city')) { <span class="field-error">City is required</span> }
+          </label>
+          <label class="field span-3">
+            <span class="field-label">Pin</span>
+            <input class="field-input" formControlName="pin" placeholder="000000" inputmode="numeric" maxlength="6" autocomplete="postal-code" [class.is-invalid]="invalid('pin')" />
+            @if (invalid('pin')) { <span class="field-error">6-digit PIN</span> }
+          </label>
+
+          <div class="field span-6">
+            <span class="field-label">Phone Number</span>
+            <div class="phone">
+              <select class="field-input" formControlName="phoneCode" aria-label="Country code">
+                @for (code of phoneCodes; track code) { <option [value]="code">{{ code }}</option> }
+              </select>
+              <input class="field-input" formControlName="phone" placeholder="12345567890" inputmode="tel" maxlength="10" autocomplete="tel-national" [class.is-invalid]="invalid('phone')" />
+            </div>
+            @if (invalid('phone')) { <span class="field-error">Enter a 10-digit phone number</span> }
+          </div>
+          <label class="field span-3">
+            <span class="field-label">State</span>
+            <input class="field-input" formControlName="state" placeholder="State" autocomplete="address-level1" [class.is-invalid]="invalid('state')" />
+            @if (invalid('state')) { <span class="field-error">State is required</span> }
+          </label>
+          <label class="field span-3">
+            <span class="field-label">Country</span>
+            <select class="field-input" formControlName="country">
+              @for (c of countries; track c) { <option [value]="c">{{ c }}</option> }
+            </select>
+          </label>
+        </form>
+      </section>
+
+      <aside class="panel total" aria-label="Order summary">
+        <div class="total__art"><img src="books-card.svg" alt="" /></div>
+        <div class="total__body">
+          <h2 class="total__title">Grand Total</h2>
+          <dl class="total__rows">
+            <div><dt>Price ({{ cart.count() }} {{ cart.count() === 1 ? 'item' : 'items' }})</dt><dd>₹{{ cart.subtotal() }}.00</dd></div>
+            <div><dt>Tax</dt><dd>₹{{ cart.tax() }}.00</dd></div>
+            <div><dt>Delivery Charges</dt><dd>{{ cart.deliveryCharge() ? '₹' + cart.deliveryCharge() : 'Free' }}</dd></div>
+          </dl>
+
+          <form class="coupon" (submit)="$event.preventDefault(); applyCoupon()">
+            <input
+              class="coupon__input"
+              placeholder="Apply Coupon"
+              aria-label="Coupon code"
+              [value]="couponCode()"
+              (input)="couponCode.set($any($event.target).value)"
+            />
+            <button type="submit" class="btn coupon__btn">Apply</button>
+          </form>
+          @if (couponMessage(); as msg) {
+            <p class="coupon__msg" [class.is-error]="!msg.ok">{{ msg.text }}</p>
+          }
+
+          <dl class="total__rows total__rows--after">
+            <div><dt>Discount</dt><dd>₹{{ cart.discount() }}</dd></div>
+          </dl>
+          <dl class="total__rows total__final">
+            <div><dt>Total Amount</dt><dd>₹{{ cart.total() }}</dd></div>
+          </dl>
+
+          <button type="submit" form="address-form" class="btn total__pay">
+            Pay Now <app-icon name="card" [size]="16" />
+          </button>
+        </div>
+      </aside>
+    </div>
+  }
+</div>

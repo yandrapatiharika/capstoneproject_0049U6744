@@ -1,0 +1,144 @@
+@if (book(); as b) {
+  <div class="container page">
+    <app-breadcrumb [items]="crumbs()" />
+
+    <div class="layout">
+      <div class="main">
+        <section class="hero">
+          <div class="covers">
+            <div class="covers__front"><app-book-cover [book]="b" /></div>
+            <div class="covers__back" [style.background]="b.cover.bg" [style.color]="b.cover.fg">
+              <p class="back__quote">“{{ b.tagline }}”</p>
+              <p class="back__text">{{ b.longDescription }}</p>
+              <p class="back__about">About the Author</p>
+              <p class="back__text back__text--sm">{{ bio() }}</p>
+              <div class="back__barcode" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="info">
+            <h1 class="info__title">{{ b.title }}</h1>
+            <p class="info__author">by <a class="link" routerLink="/writers" [queryParams]="{ name: b.author }">{{ b.author }}</a></p>
+            <p class="info__desc">{{ b.description }}</p>
+            <p class="info__publisher">Published by: <a class="link">{{ b.publisher }}</a></p>
+
+            <p class="info__format">{{ b.format }}</p>
+            <p class="info__genres"><app-genre-links [genres]="b.genres" /></p>
+
+            <p class="info__price">₹{{ b.price }}</p>
+            <p class="info__delivery">Delivery by <strong>Mon, 21 Jul</strong></p>
+
+            <div class="actions">
+              <button type="button" class="btn" (click)="addToCart()">
+                Add to Cart <app-icon name="cart" [size]="16" />
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="toggleWishlist()" [attr.aria-pressed]="inWishlist()">
+                {{ inWishlist() ? 'In Wishlist' : 'Add to Wishlist' }}
+                <app-icon name="bookmark" [size]="16" />
+              </button>
+            </div>
+
+            <dl class="facts">
+              <div class="facts__item">
+                <app-icon name="language" [size]="14" />
+                <div>
+                  <dt>Language</dt>
+                  <dd><a class="link" routerLink="/" [queryParams]="{ q: b.language }">{{ b.language }}</a></dd>
+                </div>
+              </div>
+              <div class="facts__item">
+                <app-icon name="star-outline" [size]="14" />
+                <div>
+                  <dt>Rating</dt>
+                  <dd><app-star-rating [value]="b.rating" [size]="12" /></dd>
+                </div>
+              </div>
+              <div class="facts__item">
+                <app-icon name="currency" [size]="14" />
+                <div>
+                  <dt>Sells</dt>
+                  <dd>{{ b.sold }} copies sold</dd>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="writer">
+          <h2 class="section-title">About the writer</h2>
+          <div class="writer__row">
+            <div class="avatar" aria-hidden="true">
+              <svg viewBox="0 0 80 80">
+                <rect width="80" height="80" fill="#c9d6e2" />
+                <circle cx="40" cy="32" r="14" fill="#e3b79b" />
+                <path d="M24 30c0-12 10-18 18-16s14 8 14 16c-4-6-10-8-16-8s-12 2-16 8z" fill="#3b2f2a" />
+                <path d="M16 80c2-18 12-26 24-26s22 8 24 26z" fill="#4a5a6a" />
+                <path d="M30 40c2 10 8 12 10 12s8-2 10-12c-4 4-8 6-10 6s-6-2-10-6z" fill="#3b2f2a" opacity="0.8" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="writer__name">{{ b.author }}</h3>
+              <p class="writer__bio">{{ bio() }}</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="reviews">
+          <h2 class="section-title">Reviews</h2>
+          <div class="reviews__grid">
+            <form class="review-form" (submit)="$event.preventDefault(); submitReview()">
+              <label class="field">
+                <span class="field-label review-form__label">
+                  <span>Leave Your Review</span>
+                  <span>{{ reviewText().length }}/{{ maxReview }}</span>
+                </span>
+                <textarea
+                  class="field-input"
+                  rows="6"
+                  placeholder="Placeholder text"
+                  [maxLength]="maxReview"
+                  [value]="reviewText()"
+                  (input)="onReviewInput($any($event.target).value)"
+                ></textarea>
+              </label>
+              @if (reviewError()) {
+                <p class="field-error">{{ reviewError() }}</p>
+              }
+              <div class="review-form__footer">
+                <app-star-rating [(value)]="reviewRating" [readonly]="false" [size]="18" />
+                <button type="submit" class="btn">Submit <app-icon name="arrow-right" [size]="16" /></button>
+              </div>
+            </form>
+
+            <ul class="reviews__list">
+              @for (r of reviews(); track r.id) {
+                <li class="review">
+                  <h3 class="review__name">{{ r.name }}</h3>
+                  <p class="review__text">{{ r.text }}</p>
+                  <app-star-rating [value]="r.rating" [size]="14" />
+                </li>
+              } @empty {
+                <li class="muted">No reviews yet. Be the first to share your thoughts.</li>
+              }
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <aside class="related" aria-label="Related reads">
+        <h2 class="section-title">Related Reads</h2>
+        <div class="related__list">
+          @for (r of related(); track r.id) {
+            <app-book-card [book]="r" size="sm" />
+          }
+        </div>
+      </aside>
+    </div>
+  </div>
+} @else {
+  <div class="container page empty-state">
+    <h2>Book not found</h2>
+    <p>The book you are looking for does not exist or has been removed.</p>
+    <button type="button" class="btn btn-gap-sm" (click)="goHome()">Back to catalog</button>
+  </div>
+}

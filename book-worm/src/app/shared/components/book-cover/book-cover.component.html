@@ -1,0 +1,144 @@
+<svg
+  class="cover"
+  viewBox="0 0 200 300"
+  role="img"
+  [attr.aria-label]="book().title + ' by ' + book().author + ' cover'"
+  preserveAspectRatio="xMidYMid slice"
+>
+  <defs>
+    <linearGradient [attr.id]="uid()" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" [attr.stop-color]="spec().bg" />
+      <stop offset="1" [attr.stop-color]="spec().bg2 ?? spec().bg" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" [attr.fill]="'url(#' + uid() + ')'" />
+
+  <!-- ===================== artwork ===================== -->
+  <g transform="translate(12 20) scale(0.88)">
+  @switch (spec().art) {
+    @case ('target') {
+      <g transform="translate(100 170)">
+        <circle r="46" fill="#f4efe6" stroke="#1d1d1d" stroke-width="3" />
+        <circle r="32" fill="none" stroke="#d6382b" stroke-width="10" />
+        <circle r="14" fill="#d6382b" />
+        <path d="M0 0L52 -52" stroke="#1d1d1d" stroke-width="3" />
+        <path d="M44 -58l14 -4 -4 14z" fill="#1d1d1d" />
+      </g>
+    }
+    @case ('book') {
+      <g transform="translate(100 180)">
+        <path d="M-52 24l52 14 52-14V-14L0 0l-52-14z" fill="#f7f1e1" />
+        <path d="M0 0v38" stroke="#c4392b" stroke-width="2" />
+        <path d="M-36 -2l30 6M-36 8l30 6M6 4l30-6M6 14l30-6" stroke="#c4392b" stroke-width="2" />
+        <path d="M0 -20v-44M-18 -44L0 -64l18 20" stroke="#ffd23f" stroke-width="3" fill="none" />
+        <circle cx="0" cy="-70" r="10" fill="#ffd23f" />
+        <path d="M-28 -50l-10 -10M28 -50l10 -10M-34 -34h-12M34 -34h12" stroke="#ffd23f" stroke-width="3" stroke-linecap="round" />
+      </g>
+    }
+    @case ('arrow') {
+      <g>
+        <path d="M0 300V230l130 -70 -20 -8 62 -12 -14 62 -14 -22L36 300z" fill="#f6b52d" />
+        <path d="M60 300l90 -80" stroke="#f9d36b" stroke-width="10" />
+        <g transform="translate(86 150)" fill="#0b2e3a">
+          <circle cx="0" cy="-14" r="6" />
+          <path d="M-8 -8h16l4 38h-8l-2 30h-4l-2 -30h-4l-2 30h-4l-2 -30z" />
+        </g>
+        <g fill="#ffe28c">
+          <circle cx="30" cy="110" r="2" />
+          <circle cx="160" cy="130" r="2" />
+          <circle cx="50" cy="150" r="1.6" />
+          <circle cx="170" cy="90" r="1.6" />
+          <circle cx="140" cy="165" r="1.6" />
+        </g>
+      </g>
+    }
+    @case ('moon') {
+      <g>
+        <circle cx="100" cy="150" r="34" [attr.fill]="spec().accent" opacity="0.9" />
+        <path d="M0 300V230l30 -20 20 14 28 -30 22 20 36 -24 28 26 36 -10v94z" fill="#071117" />
+        <g fill="#071117"><path d="M70 230v-50h60v50z" /><path d="M64 180l36 -22 36 22z" /></g>
+        <g fill="#ffe9a8"><rect x="84" y="196" width="6" height="8" /><rect x="110" y="196" width="6" height="8" /></g>
+      </g>
+    }
+    @case ('couple') {
+      <g>
+        <circle cx="100" cy="150" r="60" fill="#e2764b" opacity="0.55" />
+        <path d="M0 300V250c40 -20 80 -10 100 0 30 -14 70 -14 100 6v44z" fill="#1c1030" />
+        <g fill="#1c1030">
+          <circle cx="82" cy="176" r="8" /><path d="M72 184h20l6 62H66z" />
+          <circle cx="120" cy="170" r="8" /><path d="M108 178h24l-4 68h-22z" />
+        </g>
+        <g fill="#fff" opacity="0.9"><circle cx="30" cy="40" r="1.6" /><circle cx="170" cy="30" r="1.6" /><circle cx="150" cy="70" r="1.2" /><circle cx="40" cy="90" r="1.2" /></g>
+      </g>
+    }
+    @case ('rocket') {
+      <g>
+        <circle cx="100" cy="230" r="58" fill="#1b6aa5" />
+        <path d="M60 240a60 60 0 0 0 100 -10" fill="none" stroke="#7fd0ff" stroke-width="3" />
+        <g transform="translate(110 168) rotate(40)">
+          <path d="M0 -42c14 14 14 38 0 60c-14 -22 -14 -46 0 -60z" fill="#f4f4f4" />
+          <circle cx="0" cy="-12" r="6" fill="#1b6aa5" />
+          <path d="M-12 8l-10 14 12 -4zM12 8l10 14 -12 -4z" fill="#ff7a2f" />
+          <path d="M-5 20q5 22 0 28q-5 -6 0 -28z" fill="#ffb347" />
+        </g>
+        <g fill="#fff"><circle cx="40" cy="120" r="1.6" /><circle cx="160" cy="110" r="1.6" /><circle cx="60" cy="170" r="1.2" /><circle cx="150" cy="170" r="1.2" /></g>
+      </g>
+    }
+    @case ('arch') {
+      <g transform="translate(100 190)">
+        <circle cx="0" cy="-34" r="16" fill="#ffffff" opacity="0.9" />
+        <path d="M-44 56V-4a44 44 0 0 1 88 0v60h-26V-4a18 18 0 0 0 -36 0v60z" fill="#111" />
+      </g>
+    }
+    @case ('house') {
+      <g>
+        <circle cx="160" cy="120" r="16" fill="#fff6c9" opacity="0.8" />
+        <path d="M0 300V250q30 -10 60 4t80 -2 60 8v40z" fill="#07171a" />
+        <g fill="#07171a"><path d="M60 250v-60h80v60z" /><path d="M52 190l48 -34 48 34z" /><rect x="120" y="150" width="10" height="26" /></g>
+        <g fill="#ffd978"><rect x="72" y="204" width="10" height="14" /><rect x="118" y="204" width="10" height="14" /><rect x="95" y="226" width="10" height="24" /></g>
+        <g stroke="#07171a" stroke-width="3" fill="none"><path d="M40 250v-30M30 250c0 -20 20 -20 20 -40M170 250v-26" /></g>
+      </g>
+    }
+    @case ('cat') {
+      <g transform="translate(100 190)">
+        <path d="M-50 70c-10 -60 20 -92 50 -92s60 32 50 92z" fill="#f58a1f" stroke="#2b1500" stroke-width="3" />
+        <path d="M-30 -14l-12 -34 30 14zM30 -14l12 -34 -30 14z" fill="#f58a1f" stroke="#2b1500" stroke-width="3" />
+        <circle cx="-16" cy="-4" r="5" fill="#2b1500" /><circle cx="16" cy="-4" r="5" fill="#2b1500" />
+        <path d="M-4 8h8l-4 6z" fill="#2b1500" />
+        <path d="M-30 4h-18M-30 12l-16 6M30 4h18M30 12l16 6" stroke="#2b1500" stroke-width="2" stroke-linecap="round" />
+        <path d="M-30 24v30M-10 20v34M10 20v34M30 24v30" stroke="#ffb03a" stroke-width="5" />
+      </g>
+    }
+    @default {
+      <g>
+        <circle cx="100" cy="180" r="52" fill="none" [attr.stroke]="spec().accent" stroke-width="4" />
+        <circle cx="100" cy="180" r="36" fill="none" [attr.stroke]="spec().accent" stroke-width="4" opacity="0.7" />
+        <circle cx="100" cy="180" r="20" [attr.fill]="spec().accent" />
+      </g>
+    }
+  }
+
+  </g>
+
+  <!-- ===================== title ===================== -->
+  <text
+    class="title"
+    text-anchor="middle"
+    x="100"
+    [attr.y]="titleY()"
+    [attr.fill]="titleFill()"
+    [attr.font-size]="size()"
+  >
+    @for (line of spec().titleLines; track $index) {
+      <tspan x="100" [attr.dy]="$index === 0 ? 0 : lineHeight()">{{ line }}</tspan>
+    }
+  </text>
+
+  @if (spec().subtitle) {
+    <text class="sub" x="100" y="258" text-anchor="middle" [attr.fill]="titleFill()">
+      {{ spec().subtitle }}
+    </text>
+  }
+
+  <text class="author" x="100" y="286" text-anchor="middle" [attr.fill]="authorFill()">{{ author() }}</text>
+</svg>

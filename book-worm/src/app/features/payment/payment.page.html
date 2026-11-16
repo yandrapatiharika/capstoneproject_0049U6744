@@ -1,0 +1,73 @@
+<div class="scene">
+  <img class="scene-bg" src="books-scene.svg" alt="" />
+
+  <section class="scene-card pay" aria-labelledby="pay-title">
+    <header class="pay__header">
+      <h1 id="pay-title" class="pay__title">Complete Payment</h1>
+      <p class="pay__amount">Payable Amount: ₹{{ amount() }}</p>
+    </header>
+
+    <div class="pay__body">
+      <ul class="tabs" role="tablist" aria-label="Payment methods">
+        @for (m of methods; track m) {
+          <li>
+            <button
+              type="button"
+              role="tab"
+              class="tabs__item"
+              [class.is-active]="m === method()"
+              [attr.aria-selected]="m === method()"
+              (click)="select(m)"
+            >
+              {{ m }}
+            </button>
+          </li>
+        }
+      </ul>
+
+      <form class="pay__panel" (submit)="$event.preventDefault(); pay()" novalidate>
+        @if (isCard()) {
+          <div class="grid" [formGroup]="cardForm">
+            <label class="field">
+              <span class="field-label">Card Number</span>
+              <input class="field-input" formControlName="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" inputmode="numeric" maxlength="19" autocomplete="cc-number" [class.is-invalid]="invalid('cardNumber')" />
+              @if (invalid('cardNumber')) { <span class="field-error">Enter a 16-digit card number</span> }
+            </label>
+            <label class="field">
+              <span class="field-label">Name on Card</span>
+              <input class="field-input" formControlName="name" placeholder="Name" autocomplete="cc-name" [class.is-invalid]="invalid('name')" />
+              @if (invalid('name')) { <span class="field-error">Name is required</span> }
+            </label>
+            <label class="field">
+              <span class="field-label">CVV</span>
+              <input class="field-input" type="password" formControlName="cvv" placeholder="XXX" inputmode="numeric" maxlength="3" autocomplete="cc-csc" [class.is-invalid]="invalid('cvv')" />
+              @if (invalid('cvv')) { <span class="field-error">3-digit CVV</span> }
+            </label>
+            <label class="field">
+              <span class="field-label">Date of Expiry</span>
+              <input class="field-input" formControlName="expiry" placeholder="MM/YYYY" maxlength="7" autocomplete="cc-exp" [class.is-invalid]="invalid('expiry')" />
+              @if (invalid('expiry')) { <span class="field-error">Use MM/YYYY</span> }
+            </label>
+          </div>
+        } @else if (method() === 'UPI') {
+          <label class="field">
+            <span class="field-label">UPI ID</span>
+            <input class="field-input" [formControl]="upiControl" placeholder="name@bank" [class.is-invalid]="upiInvalid()" />
+            @if (upiInvalid()) { <span class="field-error">Enter a valid UPI ID</span> }
+          </label>
+        } @else {
+          <label class="field">
+            <span class="field-label">Select wallet</span>
+            <select class="field-input" [formControl]="walletControl">
+              @for (w of wallets; track w) { <option [value]="w">{{ w }}</option> }
+            </select>
+          </label>
+        }
+
+        <div class="pay__actions">
+          <button type="submit" class="btn">Pay Now <app-icon name="card" [size]="16" /></button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

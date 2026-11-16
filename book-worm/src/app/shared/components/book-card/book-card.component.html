@@ -1,0 +1,32 @@
+<article class="card" [style.--cover-w]="coverWidth()" [class.card--lg]="size() === 'lg'">
+  @if (linked()) {
+    <a class="card__cover" [routerLink]="['/book', book().id]" [attr.aria-label]="'View ' + book().title">
+      <app-book-cover [book]="book()" />
+    </a>
+  } @else {
+    <div class="card__cover"><app-book-cover [book]="book()" /></div>
+  }
+
+  <div class="card__body">
+    <h3 class="card__title">
+      @if (linked()) {
+        <a [routerLink]="['/book', book().id]">{{ book().title }}</a>
+      } @else {
+        {{ book().title }}
+      }
+    </h3>
+    <p class="card__author">by <a class="link" routerLink="/writers" [queryParams]="{ name: book().author }">{{ book().author }}</a></p>
+
+    @if (showDescription()) {
+      <p class="card__desc">{{ book().description }}</p>
+    }
+
+    <p class="card__format">{{ book().format }}</p>
+    <p class="card__genres"><app-genre-links [genres]="book().genres" /></p>
+
+    <p class="card__price">₹{{ book().price }}</p>
+    <p class="card__delivery">Delivery by <strong>{{ deliveryDate }}</strong></p>
+
+    <ng-content />
+  </div>
+</article>

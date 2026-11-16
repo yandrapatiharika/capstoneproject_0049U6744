@@ -1,0 +1,50 @@
+.confirm {
+  width: 100%;
+  max-width: 780px;
+  background: var(--bw-layer);
+  padding: 40px 32px 36px;
+  text-align: center;
+}
+
+.confirm__check {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 28px;
+  border-radius: 50%;
+  background: var(--bw-success);
+  color: #0b0b0b;
+  display: grid;
+  place-items: center;
+}
+
+.confirm__title {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.confirm__order {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--bw-text-2);
+}
+
+.confirm__books {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 28px 0 24px;
+  text-align: left;
+}
+
+.confirm__cta {
+  min-width: 220px;
+}
+
+@media (max-width: 640px) {
+  .confirm {
+    padding: 28px 16px;
+  }
+  .confirm__books {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
